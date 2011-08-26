@@ -1,0 +1,69 @@
+README für den SokobanSolver
+========================
+
+
+Sokoban?!
+---------
+
+Ist ein Denkspiel, das 1982 in Japan erfunden wurde, Sokoban bedeutet übersetzt in etwa "Lagerhausarbeiter".
+
+Die Regeln sind sehr einfach:
+Auf einer gegebenen Karte befinden sich Blöcke, teilweise auch als Diamanten bezeichnet und Zielfelder. Mit einer Figur schiebt man nun die Kisten in Zielfelder, bis alle Kisten sicher verstaut sind. Wichtig ist hierbei, dass man nur schieben, niemals ziehen darf.
+Die Regeln sind einfach, Lösungsstrategien dagegen eher weniger, beispielsweise ist Sokoban eines der Spiele, in denen man eine Map unter Umständen durch falsche Züge unlösbar machen kann.
+
+Neben seinem Anreiz als Denkspiel ist Sokoban auch aus informatischer Sicht ziemlich interessant. Das Problem ist NP-schwer und PSPACE-vollständig, daher ist es gar nicht so ohne, einen guten Algorithmus zu finden. Sokoban-Solver, die alle gegebenen Probleme halbwegs effizient lösen, wurden noch nicht entwickelt, aber die eine oder andere Uni gibt sich Mühe, Solver zu liefern, die zumindest eine recht hohe Anzahl der 90 Standardmaps zu lösen.
+Wie viele Maps unser Solver löst, haben wir nicht ausprobiert, vielleicht irgendwann, wenn wir nichts besseres mehr zu tun haben ;)
+Wir hatten 2 Wochen Zeit und hatten eine recht eingeschränkte Problemschwierigkeit, daher ist unser Solver sicher nicht als universelles Werkzeug geeignet, aber für unsere Problemstellung, aber auch als Anregung für eigne Solver funktioniert er sich ganz gut.
+
+Weitere Informationen, Karten, Applets zu Ausprobieren und und und bietet das Internet in Unmengen.
+
+
+Das Projekt
+-----------
+
+Im Rahmen eines Uni-Praktikums war es unsere Aufgabe, Lego Mindstorms-Roboter zu bauen und zu programmieren, die ein gegebenes Sokoban-Feld einlesen, die Daten weitergeben, eine Lösung berechnen, diese empfangen, abfahren und aus den eingesammelten Bricks eine Statue bauen.
+
+Programmiert werden die Bricks nicht mit der mitgelieferten NXT-Umgebung, sondern mit modifiziertem Java, genannt Lejos. --> http://lejos.sourceforge.net/
+Da der Solver unanhängig von den Bricks und den dazugehörigen Robotern läuft, haben wir uns dafür entschieden "vollständiges" Java zu verwenden.
+
+Gegliedert ist das Ganze in 4 Programmstücke, die je in unterschiedlichen Teams bearbeitet wurden.
+1.) Mapping: Das Mapping-Team konstruierte und programmierte einen NXT-Roboter, der eine gegebene Sokoban-Map kartiert und in Form von MapPoint Objekten weitergibt.
+2.) Solving: Diese MapPoints werden nun durch das Programm des Solving-Teams in einen Graphen konveriert. Auf diesem Graphen wird mit Hilfe von Hashtabellen und Pruning eine Lösung des Sokoban-Feldes errechnet. Auf den uns gegebenen 5x5-Sokoban-Feldern terminiert der Algorithmus nach unter einer Sekunde und liefert eine, derzeitig noch nicht minimale, Lösung.
+Der Algorithmus funktioniert nur für Probleme mit exakt 3 Diamanten auf maximal 8x8-Feldern. Mit leicht modifizierter Hashfunktion (codiert die Integer einfach auf eine andere Basis) läuft der Algorithmus auf bis zu 16x16-Feldern, ansonsten können beliebig größere Datentypen verwendet werden.
+Ausgabe ist eine Byte-Liste, die die Befehle codiert, die der Pusher-Roboter dann ausführt.
+3.) Pushing: Der Pusher-Roboter empfängt die Lösungsliste von den Solvern und fährt sie auf dem Feld ab. Mögliche Befehle sind Left, Right, Forward, Backward und Deliver.
+4.) Assembling: Der Roboter des Assembling-Teams empfängt die durch die Deliver-Funktion des Pushers angelieferten Blöcke und baut sie in der richtigen Anordnung zusammen. Damit steht sie, unsere Sokoban-Götzenstatue!
+
+Zwischen den einzelen Rechnern und Bricks wird via Bluetooth kommuniziert.
+
+
+Über die Autoren
+----------------
+
+Hieu Dao Trung
+Antonia Schmalstieg --> https://github.com/accxev
+Joschka Fischer --> https://github.com/Xenefungus
+
+Alle drei Autoren sind Informatik-Studenten, derzeitig im 4. bis 6. Semester ihres Bachelor-Studiums.
+
+
+Wo sind die anderen Programmteile?
+----------------------------------
+
+Bei ihren Schreibern, vielleicht lässt sich der Eine oder Andere noch überreden, sie auch zum git-Hub zu pushen, doch die roboterabhängigen-Gruppen haben ihren Code auf ihre Maschinen abgestimmt und so lange sie nicht noch eine Konstruktionsanleitung zur Verfügung stellen, wird es wohl nicht ganz einfach, damit was anzufangen ;)
+
+
+Wie kann man den Code nun benutzen?
+-----------------------------------
+
+Einfach Variante: Achtet auf die Bedingungen, schmeisst Daten im Eingabeformat rein und freut euch über eine ausgespuckte Lösung.
+Schwerere Variante: Lest euch den Code durch, versucht ihn zu verstehen und modifiziert ihn für eure Zwecke.
+
+
+Unter welcher Lizenz steht der Solver?
+--------------------------------------
+
+GNU-Lizenz für freie Dokumentation!
+--> http://upload.wikimedia.org/wikipedia/de/1/1d/GNU_Free_Documentation_License_Version_1.2_dreispaltig.pdf
+
+
