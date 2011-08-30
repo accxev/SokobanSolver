@@ -35,7 +35,7 @@ public class GameState implements Comparable<GameState> {
 			return null;
 
 		// check if the Node where the pusher has to go to exists
-		Node pusherTarget = fromNode.e[oppositeDirOf(dir)];
+		Node pusherTarget = fromNode.e[Point.oppositeDirOf(dir)];
 		if (pusherTarget == null)
 			return null;
 
@@ -121,10 +121,6 @@ public class GameState implements Comparable<GameState> {
 			s += p.toString();
 		}
 		return s + "|" + pusher + "|" + (path != null ? path.size() : 0) + ">";
-	}
-
-	private int oppositeDirOf(int dir) {
-		return (dir + 2) % 4;
 	}
 
 	@Override

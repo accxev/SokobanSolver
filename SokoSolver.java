@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /**
- * 2nd, completely overhauled version. now with more readability in every line!
+ * 2nd, completely overhauled version
  * 
  * @author Hieu Dao Trung, Antonia Schmalstieg, Joschka Fischer, August 2011
  */
@@ -15,7 +15,7 @@ public class SokoSolver {
 	public static void main(String[] args) {
 		long timeStart = Calendar.getInstance().getTimeInMillis();
 
-		List<Node> solution = (new SokoSolver()).solve(DummyMaps.map_3());
+		List<Node> solution = (new SokoSolver()).solve(DummyMaps.map_tiny());
 
 		long timeElapsed = Calendar.getInstance().getTimeInMillis() - timeStart;
 		System.out.println("Time elapsed: " + timeElapsed + " ms");
@@ -40,6 +40,8 @@ public class SokoSolver {
 
 	/** HashMap that maps Points to Nodes for looking up Nodes by coordinates */
 	private HashMap<Point, Node> nodeMap;
+	
+	private GameState startingState;
 
 	/** Node that represents the start/exit point of the map */
 	// private Node exit;
@@ -55,23 +57,26 @@ public class SokoSolver {
 	public List<Node> solve(SokoMapPoint[][] map) {
 		// convert the given map (it adds the nodes to the nodeMap as well) and
 		// save the starting state in the queue to initialize it
-		GameState startingState = SokoMapPoint.convertMap(map, nodeMap);
+		startingState = SokoMapPoint.convertMap(map, nodeMap);
 		// exit = nodeMap.get(startingState.pusher);
 		queue.add(startingState);
 		// doneStates.add(startingState);
 
 		GameState state;
 		while (!queue.isEmpty()) {
-			System.out.println("queue: " + queue.size() + " | doneStates: " + doneStates.size());
+			// System.out.println("queue: " + queue.size() + " | doneStates: " +
+			// doneStates.size()); // debug
 
 			state = queue.poll();
 			if (doneStates.contains(state))
 				continue;
 			doneStates.add(state);
-			System.out.println(state.toString() + " " + state.hashCode());
+			// System.out.println(state.toString() + " " + state.hashCode()); //
+			// debug
 
 			// check if we are done (all diamonds are at the exit)
 			if (state.isSolution()) {
+				System.out.println("States processed: " + doneStates.size());
 				List<Node> fullPath = new LinkedList<Node>(state.path);
 				fullPath.add(nodeMap.get(state.pusher));
 				return fullPath;
@@ -79,14 +84,14 @@ public class SokoSolver {
 
 			// not done
 			List<GameState> validMoves = searchValidMoves(state);
-			System.out.print("");
+			// System.out.print(""); // debug
 			for (int i = 0; i < validMoves.size(); i++) {
 				if (!doneStates.contains(validMoves.get(i))) {
 					queue.add(validMoves.get(i));
 					// doneStates.add(validMoves.get(i));
 				}
 			}
-			System.out.print("");
+			// System.out.print(""); // debug
 		}
 
 		return null;
@@ -103,5 +108,9 @@ public class SokoSolver {
 			}
 		}
 		return validMoves;
+	}
+
+	public GameState getStartingState() {
+		return startingState;
 	}
 }

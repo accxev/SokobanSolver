@@ -60,7 +60,7 @@ public class SokoMapPoint {
 		}
 
 		if (diamonds.size() != 3 || start == null)
-			throw new RuntimeException(); // invalid map
+			throw new RuntimeException("Map was invalid. Can not convert."); // invalid map
 
 		return new GameState(diamonds.toArray(new Point[0]), start, start, null);
 	}
